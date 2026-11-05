@@ -1,0 +1,95 @@
+with return_table as (
+    select *
+    from {{ref("silver_returns")}})
+
+    , order_item_table as (
+        select *
+        from {{ref("gold_fact_order_items")}})
+
+        , main_table as (
+        select
+        r.RETURN_ID,
+        r.ORDER_ITEM_ID,
+        r.REFUND_AMOUNT1,
+        r.RETURN_DATE,
+        r.RETURN_QUANTITY,
+         r.RETURN_REASON,
+        r.RETURN_STATUS,
+         o.order_item_key,
+        o.order_id,
+       o.product_id,
+        o.quantity,
+        o.unit_price,
+        o.amount,
+        o.discount1,
+       o.order_key,
+        o.customer_id,
+        o.order_Date,
+        o.order_status,
+        o.priority,
+        o.shipment_method,
+       o.cuurency,
+       o.total_amount,
+        o.name,
+        o.country,
+        o.city,
+       o.segment,
+        o.status,
+        o.date,
+        o.product_key,
+        o.p_name,
+        o.brand1,
+        o.category,
+        o.SUBCATEGORY1,
+         o.created_at,
+            o.is_active,
+          o.rec_level,
+           o.selling_price,
+          o.unit_cost,
+           o.weight_kg1
+           from return_table as r 
+           left join order_item_table as o 
+           on r.order_item_id = o.order_item_id)
+
+           select
+           row_number() over (order by return_id ) as return_key,
+               RETURN_ID,
+        ORDER_ITEM_ID,
+       REFUND_AMOUNT1,
+        RETURN_DATE,
+        RETURN_QUANTITY,
+         RETURN_REASON,
+        RETURN_STATUS,
+        order_item_key,
+        order_id,
+      product_id,
+        quantity,
+        unit_price,
+        amount,
+        discount1,
+       order_key,
+        customer_id,
+        order_Date,
+        order_status,
+        priority,
+        shipment_method,
+       cuurency,
+       total_amount,
+        name,
+        country,
+        city,
+      segment,
+        status,
+        date,
+        product_key,
+        p_name,
+        brand1,
+        category,
+        SUBCATEGORY1,
+         created_at,
+          is_active,
+          rec_level,
+           selling_price,
+          unit_cost,
+           weight_kg1
+           from main_table
